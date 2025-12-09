@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemical Inventory Search Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>🧪 Chemical Inventory Search</h1>
+        
+        <input type="text" id="searchInput" onkeyup="filterChemicals()" 
+               placeholder="Search by Keyword or CAS Number..." autofocus>
+        
+        <p id="statusMessage">Loading chemical database...</p>
+
+        <table id="chemicalTable">
+            <thead>
+                <tr>
+                    <th>CAS No.</th>
+                    <th>Full Name (Brand)</th>
+                    <th>Location</th>
+                    <th>Owner</th>
+                    <th>SDS</th>
+                </tr>
+            </thead>
+            <tbody id="chemicalTableBody">
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
