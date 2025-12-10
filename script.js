@@ -43,13 +43,14 @@ function renderTable(data) {
         const row = tableBody.insertRow();
         
         // **CRITICAL: Using your new, exact header keys for display**
-        row.insertCell().textContent = chemical['Bottle number'];
-        row.insertCell().textContent = chemical['CAS NO.']; 
-        row.insertCell().textContent = chemical['Product Name'];
+        row.insertCell().textContent = chemical['Bottle No.'];
+        row.insertCell().textContent = chemical['SDS Link']; 
+        row.insertCell().textContent = chemical['Chemical Name'];
+        row.insertCell().textContent = chemical['CAS No.'];
         row.insertCell().textContent = chemical['Chemical Form'];
-        row.insertCell().textContent = chemical['Owner'];
-        row.insertCell().textContent = chemical['Status'];
         row.insertCell().textContent = chemical['Location'];
+        row.insertCell().textContent = chemical['Owner'];
+	row.insertCell().textContent = chemical['Status'];
 
         // SDS Link (Create a clickable link)
         const sdsCell = row.insertCell();
@@ -75,8 +76,8 @@ function filterChemicals() {
     // Filter the master data array based on the search term
     const filteredData = chemicalData.filter(chemical => {
         // **CRITICAL: Using your new, exact header keys for search**
-        // Search is performed across Product Name, CAS NO., and Bottle number
-        const searchableText = `${chemical['Product Name']} ${chemical['CAS NO.']} ${chemical['Bottle number']}`.toLowerCase();
+        // Search is performed across Chemical Name, and CAS No.
+        const searchableText = `${chemical['Chemical Name']} ${chemical['CAS No.']}`.toLowerCase();
         
         return searchableText.includes(searchTerm);
     });
