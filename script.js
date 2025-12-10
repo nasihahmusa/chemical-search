@@ -35,33 +35,29 @@ function renderTable(data) {
     tableBody.innerHTML = ''; 
 
     if (data.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No chemicals found matching your criteria.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No chemicals found matching your criteria.</td></tr>';
         return;
     }
 
     data.forEach(chemical => {
         const row = tableBody.insertRow();
         
-        // Define the columns based on your Google Sheet headers
-        // Use the exact header names from your Google Sheet (e.g., 'CAS No.')
-        
-        // CAS No.
-        row.insertCell().textContent = chemical['CAS No.']; 
-        
-        // Full Name with Brand
-        row.insertCell().textContent = chemical['Full Name with Brand'];
-        
-        // Location
-        row.insertCell().textContent = chemical['Location'];
-        
-        // Owner
+        // **CRITICAL: Using your new, exact header keys for display**
+        row.insertCell().textContent = chemical['Bottle number'];
+        row.insertCell().textContent = chemical['CAS NO.']; 
+        row.insertCell().textContent = chemical['Product Name'];
+        row.insertCell().textContent = chemical['Chemical Form'];
         row.insertCell().textContent = chemical['Owner'];
+        row.insertCell().textContent = chemical['Status'];
+        row.insertCell().textContent = chemical['Location'];
 
         // SDS Link (Create a clickable link)
         const sdsCell = row.insertCell();
-        if (chemical['SDS Link']) {
+        const sdsLinkValue = chemical['SDS Link'];
+        
+        if (sdsLinkValue) {
             const sdsLink = document.createElement('a');
-            sdsLink.href = chemical['SDS Link'];
+            sdsLink.href = sdsLinkValue;
             sdsLink.textContent = 'View SDS';
             sdsLink.target = '_blank'; // Open in new tab
             sdsCell.appendChild(sdsLink);
@@ -72,14 +68,15 @@ function renderTable(data) {
 }
 
 
-// --- 3. Interactive Search/Filter Function (Triggered by input) ---
+// --- 3. Interactive Search/Filter Function ---
 function filterChemicals() {
     const searchTerm = document.getElementById('searchInput').value.toLowerCase();
     
     // Filter the master data array based on the search term
     const filteredData = chemicalData.filter(chemical => {
-        // Concatenate all searchable fields into a single string for simple keyword search
-        const searchableText = `${chemical['CAS No.']} ${chemical['Full Name with Brand']} ${chemical['Location']}`.toLowerCase();
+        // **CRITICAL: Using your new, exact header keys for search**
+        // Search is performed across Product Name, CAS NO., and Bottle number
+        const searchableText = `${chemical['Product Name']} ${chemical['CAS NO.']} ${chemical['Bottle number']}`.toLowerCase();
         
         return searchableText.includes(searchTerm);
     });
@@ -93,7 +90,6 @@ function filterChemicals() {
     } else {
         statusMessage.textContent = `Database loaded successfully. Total chemicals: ${chemicalData.length}`;
     }
-    
 }
 
 // Start the process when the page loads
