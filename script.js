@@ -29,12 +29,15 @@ async function fetchChemicals() {
     }
 }
 
-// --- 2. Render Results Function ---
+// ... (start of script.js file remains the same, including fetchChemicals function)
+
+// --- 2. Render Results Function (UPDATED) ---
 function renderTable(data) {
     // Clear the existing table rows
     tableBody.innerHTML = ''; 
 
     if (data.length === 0) {
+        // Updated colspan to 8 for all 8 columns
         tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No chemicals found matching your criteria.</td></tr>';
         return;
     }
@@ -42,57 +45,43 @@ function renderTable(data) {
     data.forEach(chemical => {
         const row = tableBody.insertRow();
         
-        // **CRITICAL: Using your new, exact header keys for display**
+        // **CRITICAL: The insertion order below MUST match your HTML header order.**
+        
+        // 1. Bottle No. (Using your Google Sheet key: 'Bottle number')
         row.insertCell().textContent = chemical['Bottle No.'];
-        row.insertCell().textContent = chemical['SDS Link']; 
-        row.insertCell().textContent = chemical['Chemical Name'];
-        row.insertCell().textContent = chemical['CAS No.'];
-        row.insertCell().textContent = chemical['Chemical Form'];
-        row.insertCell().textContent = chemical['Location'];
-        row.insertCell().textContent = chemical['Owner'];
-		row.insertCell().textContent = chemical['Status'];
-
-        // SDS Link (Create a clickable link)
+        
+        // 2. SDS Link (Using your Google Sheet key: 'SDS Link')
         const sdsCell = row.insertCell();
         const sdsLinkValue = chemical['SDS Link'];
-        
         if (sdsLinkValue) {
             const sdsLink = document.createElement('a');
             sdsLink.href = sdsLinkValue;
             sdsLink.textContent = 'View SDS';
-            sdsLink.target = '_blank'; // Open in new tab
+            sdsLink.target = '_blank';
             sdsCell.appendChild(sdsLink);
         } else {
             sdsCell.textContent = 'N/A';
         }
-    });
-}
-
-
-// --- 3. Interactive Search/Filter Function ---
-function filterChemicals() {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    
-    // Filter the master data array based on the search term
-    const filteredData = chemicalData.filter(chemical => {
-        // **CRITICAL: Using your new, exact header keys for search**
-        // Search is performed across Chemical Name, and CAS No.
-        const searchableText = `${chemical['Chemical Name']} ${chemical['CAS No.']}`.toLowerCase();
         
-        return searchableText.includes(searchTerm);
-    });
+        // 3. Chemical Name (Assuming your Google Sheet key is 'Product Name')
+        // *If your Sheet key is 'Chemical Name', change 'Product Name' below.*
+        row.insertCell().textContent = chemical['Chemical Name'];
 
-    // Re-render the table with the filtered results
-    renderTable(filteredData);
-    
-    // Update the status message
-    if (searchTerm) {
-        statusMessage.textContent = `${filteredData.length} results found for "${searchTerm}".`;
-    } else {
-        statusMessage.textContent = `Database loaded successfully. Total chemicals: ${chemicalData.length}`;
-    }
+        // 4. CAS No. (Using your Google Sheet key: 'CAS NO.')
+        row.insertCell().textContent = chemical['CAS No.']; 
+        
+        // 5. Chemical Form (Using your Google Sheet key: 'Chemical Form')
+        row.insertCell().textContent = chemical['Chemical Form'];
+        
+        // 6. Location (Using your Google Sheet key: 'Location')
+        row.insertCell().textContent = chemical['Location'];
+        
+        // 7. Owner (Using your Google Sheet key: 'Owner')
+        row.insertCell().textContent = chemical['Owner'];
+        
+        // 8. Status (Using your Google Sheet key: 'Status')
+        row.insertCell().textContent = chemical['Status'];
+    });
 }
 
-// Start the process when the page loads
-
-fetchChemicals();
+// ... (the rest of script.js remains the same, including filterChemicals function)
