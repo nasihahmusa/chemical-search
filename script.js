@@ -50,7 +50,7 @@ function renderTable(data) {
         row.insertCell().textContent = chemical['Chemical Form'];
         row.insertCell().textContent = chemical['Location'];
         row.insertCell().textContent = chemical['Owner'];
-	row.insertCell().textContent = chemical['Status'];
+		row.insertCell().textContent = chemical['Status'];
 
         // SDS Link (Create a clickable link)
         const sdsCell = row.insertCell();
@@ -94,4 +94,5 @@ function filterChemicals() {
 }
 
 // Start the process when the page loads
+
 fetchChemicals();
